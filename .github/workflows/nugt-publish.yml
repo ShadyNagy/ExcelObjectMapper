@@ -1,0 +1,30 @@
+name: Publish ExcelObjectMapper to NuGet
+
+on:
+  push:
+    branches:
+      - main # Your default release branch
+    paths:
+      - 'src/ExcelObjectMapper/**'
+
+jobs:
+  publish:
+    name: Build and Publish
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Required for a specific dotnet version that doesn't come with ubuntu-latest / windows-latest
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x' # Change the dotnet version to the latest LTS version (6.0.x)
+
+      # Publish
+      - name: Create the package
+        run: dotnet pack -c Release -o . src/ExcelObjectMapper/ExcelObjectMapper.csproj
+        
+      - name: Publish to nuget.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }} # Use environment variable
+        run: dotnet nuget push ExcelObjectMapper.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
