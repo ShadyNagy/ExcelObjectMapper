@@ -27,4 +27,4 @@ jobs:
       - name: Publish to nuget.org
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }} # Use environment variable
-        run: dotnet nuget push ExcelObjectMapper.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+        run: nuget push ExcelObjectMapper.*.nupkg -src https://api.nuget.org/v3/index.json ${{secrets.NUGET_API_KEY}}
