@@ -3,11 +3,12 @@
   <metadata>
     <id>ExcelObjectMapper</id>
     <title>Excel Object Mapper</title>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Shady Nagy</authors>
     <description>
       A library for mapping Excel data to C# objects using EPPlus.
     </description>
+    <packageType name="Dependency" />
     <language>en-US</language>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/ShadyNagy/ExcelObjectMapper</projectUrl>
