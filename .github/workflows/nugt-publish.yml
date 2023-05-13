@@ -12,13 +12,13 @@ jobs:
     name: Build and Publish
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Required for a specific dotnet version that doesn't come with ubuntu-latest / windows-latest
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x' # Change the dotnet version to the latest LTS version (6.0.x)
+          dotnet-version: '7.0.x'
 
       # Publish
       - name: Create the package
