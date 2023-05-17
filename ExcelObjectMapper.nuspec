@@ -3,18 +3,30 @@
   <metadata>
     <id>ExcelObjectMapper</id>
     <title>Excel Object Mapper</title>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <authors>Shady Nagy</authors>
     <description>
       A library for mapping Excel data to C# objects using EPPlus.
     </description>
     <dependencies>
-      <group targetFramework=".NETStandard2.1" />
-      <group targetFramework=".NETCoreApp3.0" />
-      <group targetFramework=".NETCoreApp3.1" />
-      <group targetFramework=".NET5.0" />
-      <group targetFramework=".NET6.0" />
-      <group targetFramework=".NET7.0" />
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
+      <group targetFramework=".NETCoreApp3.0">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
+      <group targetFramework=".NET5.0">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
+      <group targetFramework=".NET6.0">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
+      <group targetFramework=".NET7.0">
+        <dependency id="EPPlus" version="6.2.3" />
+      </group>
     </dependencies>
     <packageType name="Dependency" />
     <language>en-US</language>
