@@ -11,7 +11,6 @@ using ExcelObjectMapper.Models;
 
 namespace ExcelObjectMapper.Readers
 {
-
 	/// <summary>
 	/// A generic class for reading data from Excel sheets into a list of objects.
 	/// </summary>
