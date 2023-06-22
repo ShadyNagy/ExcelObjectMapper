@@ -3,7 +3,7 @@
   <metadata>
     <id>ExcelObjectMapper</id>
     <title>Excel Object Mapper</title>
-    <version>1.5.1</version>
+    <version>1.5.5</version>
     <authors>Shady Nagy</authors>
     <description>
       A library for mapping Excel data to C# objects using EPPlus.
@@ -32,7 +32,7 @@
     <language>en-US</language>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/ShadyNagy/ExcelObjectMapper</projectUrl>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Dynamic is supported.</releaseNotes>
     <tags>Excel, EPPlus, Object, Mapper, ExcelObjectMapper</tags>
     <icon>icon.png</icon>
     <copyright>Copyright 2023 (c) Shady Nagy. All rights reserved.</copyright>

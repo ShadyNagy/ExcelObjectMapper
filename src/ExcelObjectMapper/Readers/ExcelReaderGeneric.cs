@@ -15,7 +15,8 @@ namespace ExcelObjectMapper.Readers
 	/// <summary>
 	/// A generic class for reading data from Excel sheets into a list of objects.
 	/// </summary>
-  public class ExcelReader : IExcelReader
+	/// <typeparam name="T">The type of objects to read data into.</typeparam>
+	public class ExcelReader<T> : IExcelReader<T> where T : new()
 	{
 		private readonly ExcelPackage _package;
 
@@ -74,7 +75,7 @@ namespace ExcelObjectMapper.Readers
 		/// </summary>
 		/// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
 		/// <returns>A list of objects with data read from the first sheet.</returns>
-		public List<dynamic> ReadSheet(Dictionary<string, string> mapping)
+		public List<T> ReadSheet(Dictionary<string, string> mapping)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -91,7 +92,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A list of objects with data read from the first sheet.</returns>
-    public List<dynamic> ReadSheet(Dictionary<string, string> mapping, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheet(Dictionary<string, string> mapping, IReadOnlyList<string> requiredProperties)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -107,7 +108,7 @@ namespace ExcelObjectMapper.Readers
 		/// </summary>
 		/// <param name="mapping">A list of property mappings that map object property names to Excel column names and static values.</param>
 		/// <returns>A list of objects with data read from the first sheet.</returns>
-		public List<dynamic> ReadSheet(IReadOnlyList<PropertyMapping> mapping)
+		public List<T> ReadSheet(IReadOnlyList<PropertyMapping> mapping)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -124,7 +125,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="mapping">A list of property mappings that map object property names to Excel column names and static values.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A list of objects with data read from the first sheet.</returns>
-    public List<dynamic> ReadSheet(IReadOnlyList<PropertyMapping> mapping, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheet(IReadOnlyList<PropertyMapping> mapping, IReadOnlyList<string> requiredProperties)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -143,7 +144,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="filter">A function that takes an object of type T and returns a boolean. The method uses this function to filter the rows in the worksheet. Only rows for which the function returns true are included in the list.</param>
     /// <returns>A list of objects of type T where each object represents a row in the worksheet. The objects are created based on the provided mapping and filter, and only rows that contain non-null and non-empty values for all required properties are included in the list.</returns>
     /// <exception cref="InvalidOperationException">Thrown when no worksheets are found in the Excel file.</exception>
-    public List<dynamic> ReadSheetFiltered(Dictionary<string, string> mapping, Func<dynamic, bool> filter)
+    public List<T> ReadSheetFiltered(Dictionary<string, string> mapping, Func<T, bool> filter)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -163,7 +164,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row in the worksheet contains null or empty values for any of these properties, the row will not be included in the list.</param>
     /// <returns>A list of objects of type T where each object represents a row in the worksheet. The objects are created based on the provided mapping and filter, and only rows that contain non-null and non-empty values for all required properties are included in the list.</returns>
     /// <exception cref="InvalidOperationException">Thrown when no worksheets are found in the Excel file.</exception>
-    public List<dynamic> ReadSheetFiltered(Dictionary<string, string> mapping, Func<dynamic, bool> filter, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetFiltered(Dictionary<string, string> mapping, Func<T, bool> filter, IReadOnlyList<string> requiredProperties)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -180,7 +181,7 @@ namespace ExcelObjectMapper.Readers
 		/// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
 		/// <param name="comparison">A comparison function to sort the rows based on their data.</param>
 		/// <returns>A sorted list of objects with data read from the specified sheet.</returns>
-		public List<dynamic> ReadSheetSorted(Dictionary<string, string> mapping, Comparison<dynamic> comparison)
+		public List<T> ReadSheetSorted(Dictionary<string, string> mapping, Comparison<T> comparison)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -198,7 +199,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="comparison">A comparison function to sort the rows based on their data.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A sorted list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheetSorted(Dictionary<string, string> mapping, Comparison<dynamic> comparison, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetSorted(Dictionary<string, string> mapping, Comparison<T> comparison, IReadOnlyList<string> requiredProperties)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -217,8 +218,8 @@ namespace ExcelObjectMapper.Readers
 		/// <param name="filter">A function to filter the rows based on their data.</param>
 		/// <param name="comparison">A comparison function to sort the rows based on their data.</param>
 		/// <returns>A filtered and sorted list of objects with data read from the specified sheet.</returns>
-		public List<dynamic> ReadSheetFilteredAndSorted(Dictionary<string, string> mapping, Func<dynamic, bool> filter,
-			Comparison<dynamic> comparison)
+		public List<T> ReadSheetFilteredAndSorted(Dictionary<string, string> mapping, Func<T, bool> filter,
+			Comparison<T> comparison)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -238,8 +239,8 @@ namespace ExcelObjectMapper.Readers
     /// <param name="comparison">A comparison function to sort the rows based on their data.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A filtered and sorted list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheetFilteredAndSorted(Dictionary<string, string> mapping, Func<dynamic, bool> filter,
-			Comparison<dynamic> comparison, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetFilteredAndSorted(Dictionary<string, string> mapping, Func<T, bool> filter,
+			Comparison<T> comparison, IReadOnlyList<string> requiredProperties)
 		{
 			var firstWorksheet = _package.Workbook.Worksheets.FirstOrDefault();
 			if (firstWorksheet == null)
@@ -250,13 +251,58 @@ namespace ExcelObjectMapper.Readers
 			return ReadSheetFilteredAndSorted(firstWorksheet.Name, mapping, filter, comparison, requiredProperties);
 		}
 
+		/// <summary>
+		/// Reads data from the specified sheet into a list of objects.
+		/// </summary>
+		/// <param name="sheetName">The name of the sheet to read data from.</param>
+		/// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
+		/// <returns>A list of objects with data read from the specified sheet.</returns>
+		public List<T> ReadSheet(string sheetName, Dictionary<string, string> mapping)
+		{
+			var result = new List<T>();
+			var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
+				string.Equals(sheetName, ws.Name, StringComparison.CurrentCultureIgnoreCase));
+
+			if (worksheet == null || worksheet.Dimension == null)
+			{
+				return result;
+			}
+
+			var rowCount = worksheet.Dimension.End.Row;
+			var columnCount = worksheet.Dimension.End.Column > 100000 ? 100000 : worksheet.Dimension.End.Column;
+
+			for (var rowIndex = 2; rowIndex <= rowCount; rowIndex++)
+			{
+				var toAdd = new T();
+
+				for (var columnIndex = 1; columnIndex <= columnCount; columnIndex++)
+				{
+					var columnName = GetColumnNameByIndex(worksheet, columnIndex);
+					var mapped = mapping.FirstOrDefault(x => string.Equals(x.Value.RemoveSpecialCharacters(),
+						columnName.RemoveSpecialCharacters(), StringComparison.CurrentCultureIgnoreCase));
+					if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(mapped.Key))
+					{
+						continue;
+					}
+
+					var cellValue = worksheet.Cells[rowIndex, columnIndex].Value;
+
+					toAdd.SetProperty(mapped.Key, cellValue);
+				}
+
+				result.Add(toAdd);
+			}
+
+			return result;
+		}
+
     /// <summary>
     /// Reads data from the specified worksheet into a list of dynamic objects (ExpandoObject).
     /// </summary>
     /// <param name="sheetName">The name of the sheet to read data from.</param>
     /// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
     /// <returns>A list of dynamic objects with data read from the specified sheet. If the sheet doesn't exist or has no data, an empty list is returned.</returns>
-    public List<dynamic> ReadSheet(string sheetName, Dictionary<string, string> mapping)
+    public dynamic ReadSheetToDynamic(string sheetName, Dictionary<string, string> mapping)
     {
       var result = new List<dynamic>();
       var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
@@ -303,9 +349,9 @@ namespace ExcelObjectMapper.Readers
     /// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
 		/// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheet(string sheetName, Dictionary<string, string> mapping, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheet(string sheetName, Dictionary<string, string> mapping, IReadOnlyList<string> requiredProperties)
     {
-      var result = new List<dynamic>();
+      var result = new List<T>();
       var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
           string.Equals(sheetName, ws.Name, StringComparison.CurrentCultureIgnoreCase));
 
@@ -319,7 +365,7 @@ namespace ExcelObjectMapper.Readers
 
       for (var rowIndex = 2; rowIndex <= rowCount; rowIndex++)
       {
-        var toAdd = new ExpandoObject() as IDictionary<string, Object>;
+        var toAdd = new T();
         bool shouldAdd = true;
 
         for (var columnIndex = 1; columnIndex <= columnCount; columnIndex++)
@@ -333,7 +379,7 @@ namespace ExcelObjectMapper.Readers
           }
 
           var cellValue = worksheet.Cells[rowIndex, columnIndex].Value;
-          toAdd[mapped.Key] = cellValue;
+          toAdd.SetProperty(mapped.Key, cellValue);
 
           // Check if the property is in the required properties list and if it's null or empty.
           if (requiredProperties.Contains(mapped.Key))
@@ -362,9 +408,9 @@ namespace ExcelObjectMapper.Readers
     /// <param name="sheetName">The name of the sheet to read data from.</param>
     /// <param name="mapping">A list of property mappings that map object property names to Excel column names and static values.</param>
     /// <returns>A list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheet(string sheetName, IReadOnlyList<PropertyMapping> mapping)
+    public List<T> ReadSheet(string sheetName, IReadOnlyList<PropertyMapping> mapping)
 		{
-			var result = new List<dynamic>();
+			var result = new List<T>();
 
 			var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
 				string.Equals(sheetName, ws.Name, StringComparison.CurrentCultureIgnoreCase));
@@ -379,9 +425,9 @@ namespace ExcelObjectMapper.Readers
 
 			for (var rowIndex = 2; rowIndex <= rowCount; rowIndex++)
 			{
-        var toAdd = new ExpandoObject() as IDictionary<string, Object>;
+				var toAdd = new T();
 
-        foreach (var entry in mapping)
+				foreach (var entry in mapping)
 				{
 					var columnName = entry.ColumnName.RemoveTabAndEnter();
 					var columnIndex = GetColumnIndexByName(worksheet, columnName);
@@ -390,16 +436,16 @@ namespace ExcelObjectMapper.Readers
 					{
 						if (entry.StaticValue != null)
 						{
-              toAdd[entry.PropertyName] = entry.StaticValue;
-            }
+							toAdd.SetProperty(entry.PropertyName, entry.StaticValue);
+						}
 
 						continue;
 					}
 
 					var cellValue = worksheet.Cells[rowIndex, columnIndex].Value;
 
-          toAdd[entry.PropertyName] = cellValue;
-        }
+					toAdd.SetProperty(entry.PropertyName, cellValue);
+				}
 
 				result.Add(toAdd);
 			}
@@ -414,9 +460,9 @@ namespace ExcelObjectMapper.Readers
     /// <param name="mapping">A list of property mappings that map object property names to Excel column names and static values.</param>
 		/// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheet(string sheetName, IReadOnlyList<PropertyMapping> mapping, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheet(string sheetName, IReadOnlyList<PropertyMapping> mapping, IReadOnlyList<string> requiredProperties)
     {
-      var result = new List<dynamic>();
+      var result = new List<T>();
 
       var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
           string.Equals(sheetName, ws.Name, StringComparison.CurrentCultureIgnoreCase));
@@ -431,7 +477,7 @@ namespace ExcelObjectMapper.Readers
 
       for (var rowIndex = 2; rowIndex <= rowCount; rowIndex++)
       {
-        var toAdd = new ExpandoObject() as IDictionary<string, Object>;
+        var toAdd = new T();
         bool shouldAdd = true;
 
         foreach (var entry in mapping)
@@ -443,14 +489,14 @@ namespace ExcelObjectMapper.Readers
           {
             if (entry.StaticValue != null)
             {
-              toAdd[entry.PropertyName] = entry.StaticValue;
+              toAdd.SetProperty(entry.PropertyName, entry.StaticValue);
             }
 
             continue;
           }
 
           var cellValue = worksheet.Cells[rowIndex, columnIndex].Value;
-          toAdd[entry.PropertyName] = cellValue;
+          toAdd.SetProperty(entry.PropertyName, cellValue);
 
           // Check if the property is in the required properties list and if it's null or empty.
           if (requiredProperties.Contains(entry.PropertyName))
@@ -521,7 +567,7 @@ namespace ExcelObjectMapper.Readers
 		/// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
 		/// <param name="filter">A function to filter the rows based on their data.</param>
 		/// <returns>A filtered list of objects with data read from the specified sheet.</returns>
-		public List<dynamic> ReadSheetFiltered(string sheetName, Dictionary<string, string> mapping, Func<dynamic, bool> filter)
+		public List<T> ReadSheetFiltered(string sheetName, Dictionary<string, string> mapping, Func<T, bool> filter)
 		{
 			var data = ReadSheet(sheetName, mapping);
 			return data.Where(filter).ToList();
@@ -535,7 +581,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="filter">A function to filter the rows based on their data.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A filtered list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheetFiltered(string sheetName, Dictionary<string, string> mapping, Func<dynamic, bool> filter, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetFiltered(string sheetName, Dictionary<string, string> mapping, Func<T, bool> filter, IReadOnlyList<string> requiredProperties)
 		{
 			var data = ReadSheet(sheetName, mapping, requiredProperties);
 			return data.Where(filter).ToList();
@@ -548,7 +594,7 @@ namespace ExcelObjectMapper.Readers
 		/// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
 		/// <param name="comparison">A comparison function to sort the rows based on their data.</param>
 		/// <returns>A sorted list of objects with data read from the specified sheet.</returns>
-		public List<dynamic> ReadSheetSorted(string sheetName, Dictionary<string, string> mapping, Comparison<dynamic> comparison)
+		public List<T> ReadSheetSorted(string sheetName, Dictionary<string, string> mapping, Comparison<T> comparison)
 		{
 			var data = ReadSheet(sheetName, mapping);
 			data.Sort(comparison);
@@ -563,7 +609,7 @@ namespace ExcelObjectMapper.Readers
     /// <param name="comparison">A comparison function to sort the rows based on their data.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A sorted list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheetSorted(string sheetName, Dictionary<string, string> mapping, Comparison<dynamic> comparison, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetSorted(string sheetName, Dictionary<string, string> mapping, Comparison<T> comparison, IReadOnlyList<string> requiredProperties)
 		{
 			var data = ReadSheet(sheetName, mapping, requiredProperties);
 			data.Sort(comparison);
@@ -578,8 +624,8 @@ namespace ExcelObjectMapper.Readers
 		/// <param name="filter">A function to filter the rows based on their data.</param>
 		/// <param name="comparison">A comparison function to sort the rows based on their data.</param>
 		/// <returns>A filtered and sorted list of objects with data read from the specified sheet.</returns>
-		public List<dynamic> ReadSheetFilteredAndSorted(string sheetName, Dictionary<string, string> mapping,
-			Func<dynamic, bool> filter, Comparison<dynamic> comparison)
+		public List<T> ReadSheetFilteredAndSorted(string sheetName, Dictionary<string, string> mapping,
+			Func<T, bool> filter, Comparison<T> comparison)
 		{
 			var data = ReadSheet(sheetName, mapping);
 			var filteredData = data.Where(filter).ToList();
@@ -596,8 +642,8 @@ namespace ExcelObjectMapper.Readers
     /// <param name="comparison">A comparison function to sort the rows based on their data.</param>
     /// <param name="requiredProperties">A list of property names that are required to have non-null and non-empty values. If a row contains null or empty values for any of these properties, the row will not be included in the result list.</param>
     /// <returns>A filtered and sorted list of objects with data read from the specified sheet.</returns>
-    public List<dynamic> ReadSheetFilteredAndSorted(string sheetName, Dictionary<string, string> mapping,
-			Func<dynamic, bool> filter, Comparison<dynamic> comparison, IReadOnlyList<string> requiredProperties)
+    public List<T> ReadSheetFilteredAndSorted(string sheetName, Dictionary<string, string> mapping,
+			Func<T, bool> filter, Comparison<T> comparison, IReadOnlyList<string> requiredProperties)
 		{
 			var data = ReadSheet(sheetName, mapping, requiredProperties);
 			var filteredData = data.Where(filter).ToList();
