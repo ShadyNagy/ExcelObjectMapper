@@ -56,7 +56,7 @@ var mapping = new Dictionary<string, string>
 };
 
 var excelReader = new ExcelReader<Employee>(filePath);
-var data = excelReader.ReadSheet(mapping);
+var employees = excelReader.ReadSheet(mapping);
 
 foreach (var employee in employees)
 {
@@ -84,7 +84,7 @@ var mapping = new Dictionary<string, string>
 };
 
 var excelReader = new ExcelReader<Employee>(fileBytes);
-var data = excelReader.ReadSheet(mapping);
+var employees = excelReader.ReadSheet(mapping);
 
 foreach (var employee in employees)
 {
@@ -110,7 +110,7 @@ public async Task<IActionResult> Upload(IFormFile file)
     .Build();
     
     var excelReader = new ExcelReader<Employee>(file);
-    var data = excelReader.ReadSheet(mapping);
+    var employees = excelReader.ReadSheet(mapping);
 
     foreach (var employee in employees)
     {
