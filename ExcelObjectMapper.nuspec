@@ -3,7 +3,7 @@
   <metadata>
     <id>ExcelObjectMapper</id>
     <title>Excel Object Mapper</title>
-    <version>1.5.5</version>
+    <version>1.5.6</version>
     <authors>Shady Nagy</authors>
     <description>
       A library for mapping Excel data to C# objects using EPPlus.
