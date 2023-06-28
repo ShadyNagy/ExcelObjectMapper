@@ -76,13 +76,21 @@ namespace ExcelObjectMapper.Extensions
 			else
 			{
 				var nextObj = propertyInfo.GetValue(obj);
-				if (nextObj == null)
-				{
-					nextObj = Activator.CreateInstance(propertyInfo.PropertyType);
-					propertyInfo.SetValue(obj, nextObj);
-				}
+        if (nextObj == null)
+        {
+          if (propertyInfo.PropertyType == typeof(string))
+          {
+            nextObj = string.Empty;
+          }
+          else
+          {
+            nextObj = Activator.CreateInstance(propertyInfo.PropertyType);
+          }
 
-				if (propertyInfo.PropertyType.IsGenericType &&
+          propertyInfo.SetValue(obj, nextObj);
+        }
+
+        if (propertyInfo.PropertyType.IsGenericType &&
 						propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
 				{
 					var list = (IList)nextObj;

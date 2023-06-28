@@ -297,52 +297,6 @@ namespace ExcelObjectMapper.Readers
 		}
 
     /// <summary>
-    /// Reads data from the specified worksheet into a list of dynamic objects (ExpandoObject).
-    /// </summary>
-    /// <param name="sheetName">The name of the sheet to read data from.</param>
-    /// <param name="mapping">A dictionary that maps object property names to Excel column names.</param>
-    /// <returns>A list of dynamic objects with data read from the specified sheet. If the sheet doesn't exist or has no data, an empty list is returned.</returns>
-    public dynamic ReadSheetToDynamic(string sheetName, Dictionary<string, string> mapping)
-    {
-      var result = new List<dynamic>();
-      var worksheet = _package.Workbook.Worksheets.FirstOrDefault(ws =>
-        string.Equals(sheetName, ws.Name, StringComparison.CurrentCultureIgnoreCase));
-
-      if (worksheet == null || worksheet.Dimension == null)
-      {
-        return result;
-      }
-
-      var rowCount = worksheet.Dimension.End.Row;
-      var columnCount = worksheet.Dimension.End.Column > 100000 ? 100000 : worksheet.Dimension.End.Column;
-
-      for (var rowIndex = 2; rowIndex <= rowCount; rowIndex++)
-      {
-        var toAdd = new ExpandoObject() as IDictionary<string, Object>;
-
-        for (var columnIndex = 1; columnIndex <= columnCount; columnIndex++)
-        {
-          var columnName = GetColumnNameByIndex(worksheet, columnIndex);
-          var mapped = mapping.FirstOrDefault(x => string.Equals(x.Value.RemoveSpecialCharacters(),
-            columnName.RemoveSpecialCharacters(), StringComparison.CurrentCultureIgnoreCase));
-          if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(mapped.Key))
-          {
-            continue;
-          }
-
-          var cellValue = worksheet.Cells[rowIndex, columnIndex].Value;
-
-          // Using the IDictionary interface to add new properties to the ExpandoObject
-          toAdd[mapped.Key] = cellValue;
-        }
-
-        result.Add(toAdd);
-      }
-
-      return result;
-    }
-
-    /// <summary>
     /// Reads data from the specified sheet into a list of objects.
     /// </summary>
     /// <param name="sheetName">The name of the sheet to read data from.</param>
