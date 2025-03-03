@@ -2,7 +2,7 @@
 [![ExcelObjectMapper on NuGet](https://img.shields.io/nuget/v/ExcelObjectMapper?label=ExcelObjectMapper)](https://www.nuget.org/packages/ExcelObjectMapper/)
 [![NuGet](https://img.shields.io/nuget/dt/ExcelObjectMapper)](https://www.nuget.org/packages/ExcelObjectMapper)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/ShadyNagy/ExcelObjectMapper/blob/main/LICENSE)
-[![paypal](https://img.shields.io/badge/PayPal-tip%20me-green.svg?logo=paypal)](https://www.paypal.me/shadynagy)
+[![Sponsor](https://img.shields.io/badge/Sponsor-ShadyNagy-brightgreen?logo=github-sponsors)](https://github.com/sponsors/ShadyNagy)
 
 # ExcelObjectMapper
 
